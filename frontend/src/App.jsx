@@ -11,6 +11,7 @@ import UserBoard from "./components/UserBoard";
 import ClassSchedule from "./components/ClassSchedule";
 import AdminClassManagement from "./components/AdminClassManagement";
 import AdminAnalytics from "./components/AdminAnalytics";
+import WorkoutTracker from "./components/WorkoutTracker";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -71,6 +72,9 @@ function App() {
                     <Link to={"/classes"} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
                       Classes
                     </Link>
+                    <Link to={"/workouts"} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                      Workouts
+                    </Link>
                   </div>
                 ) : (
                   <div className="flex items-center space-x-4">
@@ -104,6 +108,7 @@ function App() {
           <Route path="/classes" element={<ClassSchedule />} />
           <Route path="/admin/classes" element={<AdminClassManagement />} />
           <Route path="/admin/analytics" element={<AdminAnalytics />} />
+          <Route path="/workouts" element={<WorkoutTracker />} />
         </Routes>
       </div>
     </div>
