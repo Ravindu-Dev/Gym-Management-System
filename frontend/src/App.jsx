@@ -12,6 +12,8 @@ import ClassSchedule from "./components/ClassSchedule";
 import AdminClassManagement from "./components/AdminClassManagement";
 import AdminAnalytics from "./components/AdminAnalytics";
 import WorkoutTracker from "./components/WorkoutTracker";
+import MemberQR from "./components/MemberQR";
+import AdminScanner from "./components/AdminScanner";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -108,7 +110,10 @@ function App() {
           <Route path="/classes" element={<ClassSchedule />} />
           <Route path="/admin/classes" element={<AdminClassManagement />} />
           <Route path="/admin/analytics" element={<AdminAnalytics />} />
+          <Route path="/admin/analytics" element={<AdminAnalytics />} />
+          <Route path="/admin/scan" element={<AdminScanner />} />
           <Route path="/workouts" element={<WorkoutTracker />} />
+          <Route path="/my-qr" element={<MemberQR />} />
         </Routes>
       </div>
     </div>

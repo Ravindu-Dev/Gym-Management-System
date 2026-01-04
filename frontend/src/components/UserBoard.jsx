@@ -24,7 +24,12 @@ const UserBoard = () => {
         <div className="container mx-auto px-4 py-8">
             <div className="flex items-center justify-between mb-8">
                 <h2 className="text-3xl font-bold text-white">My Dashboard</h2>
-                <Link to="/plans" className="btn-primary">Browse Plans</Link>
+                <div className="space-x-4">
+                    <Link to="/my-qr" className="bg-white text-dark-900 px-4 py-2 rounded-lg font-bold hover:bg-gray-200 transition-colors shadow-lg">
+                        My Pass 📱
+                    </Link>
+                    <Link to="/plans" className="btn-primary">Browse Plans</Link>
+                </div>
             </div>
 
             {loading ? (
