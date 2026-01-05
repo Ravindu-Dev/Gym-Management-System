@@ -20,8 +20,6 @@ const PaymentPage = () => {
                 .catch((err) => {
                     console.error("Error creating checkout session", err);
                     alert("Failed to initiate payment. Please try again.");
-                    // Use your Publishable Key here. For production, use environment variables.
-                    // const stripePromise = loadStripe("pk_test_placeholder"); // This line was likely intended for a different flow or location.
                 });
         }
     }, [amount, planId]);

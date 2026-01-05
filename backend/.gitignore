@@ -12,3 +12,6 @@ help.md
 .vscode/
 .idea/
 *.iml
+.env
+application-dev.properties
+src/main/resources/application-dev.properties
