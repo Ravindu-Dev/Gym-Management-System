@@ -17,8 +17,12 @@ const getAllPlans = () => {
     return axios.get(API_URL + "plans");
 };
 
-const subscribe = (planId) => {
-    return axios.post(API_URL + "subscribe/" + planId, {}, { headers: authHeader() });
+const subscribe = (planId, sessionId = null) => {
+    let url = API_URL + "subscribe/" + planId;
+    if (sessionId) {
+        url += "?sessionId=" + sessionId;
+    }
+    return axios.post(url, {}, { headers: authHeader() });
 };
 
 const getMySubscriptions = () => {

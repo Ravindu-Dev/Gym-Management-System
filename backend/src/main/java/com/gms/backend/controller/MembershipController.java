@@ -31,10 +31,10 @@ public class MembershipController {
 
     @PostMapping("/subscribe/{planId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public MemberSubscription subscribe(@PathVariable String planId) {
+    public MemberSubscription subscribe(@PathVariable String planId, @RequestParam(required = false) String sessionId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return membershipService.subscribe(userDetails.getId(), planId);
+        return membershipService.subscribe(userDetails.getId(), planId, sessionId);
     }
 
     @GetMapping("/my-subscriptions")

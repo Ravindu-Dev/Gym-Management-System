@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import PaymentService from "../services/payment.service";
 
@@ -7,8 +7,11 @@ const PaymentPage = () => {
     const planId = searchParams.get("planId");
     const amount = searchParams.get("amount");
 
+    const initiated = useRef(false); // Using a ref to track if we've already started
+
     useEffect(() => {
-        if (amount && planId) {
+        if (amount && planId && !initiated.current) {
+            initiated.current = true;
             // Amount in cents for Stripe. 29.99 -> 2999
             const amountInCents = Math.round(parseFloat(amount) * 100);
 

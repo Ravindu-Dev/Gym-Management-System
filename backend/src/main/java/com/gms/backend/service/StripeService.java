@@ -13,39 +13,42 @@ import jakarta.annotation.PostConstruct;
 @Service
 public class StripeService {
 
-    @Value("${stripe.apiKey}")
-    private String secretKey;
+        @Value("${stripe.apiKey}")
+        private String secretKey;
 
-    @PostConstruct
-    public void init() {
-        Stripe.apiKey = secretKey;
-    }
+        @PostConstruct
+        public void init() {
+                Stripe.apiKey = secretKey;
+        }
 
-    public PaymentResponse createCheckoutSession(Long amount, String description, String planId)
-            throws StripeException {
-        String successUrl = "http://localhost:5173/payment/success?planId=" + planId;
-        String cancelUrl = "http://localhost:5173/payment/cancel";
+        public PaymentResponse createCheckoutSession(Long amount, String description, String planId)
+                        throws StripeException {
+                String successUrl = "http://localhost:5173/payment/success?planId=" + planId
+                                + "&session_id={CHECKOUT_SESSION_ID}";
+                String cancelUrl = "http://localhost:5173/payment/cancel";
 
-        SessionCreateParams params = SessionCreateParams.builder()
-                .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl(successUrl)
-                .setCancelUrl(cancelUrl)
-                .addLineItem(
-                        SessionCreateParams.LineItem.builder()
-                                .setQuantity(1L)
-                                .setPriceData(
-                                        SessionCreateParams.LineItem.PriceData.builder()
-                                                .setCurrency("usd")
-                                                .setUnitAmount(amount)
-                                                .setProductData(
-                                                        SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                                .setName(description)
+                SessionCreateParams params = SessionCreateParams.builder()
+                                .setMode(SessionCreateParams.Mode.PAYMENT)
+                                .setSuccessUrl(successUrl)
+                                .setCancelUrl(cancelUrl)
+                                .addLineItem(
+                                                SessionCreateParams.LineItem.builder()
+                                                                .setQuantity(1L)
+                                                                .setPriceData(
+                                                                                SessionCreateParams.LineItem.PriceData
+                                                                                                .builder()
+                                                                                                .setCurrency("usd")
+                                                                                                .setUnitAmount(amount)
+                                                                                                .setProductData(
+                                                                                                                SessionCreateParams.LineItem.PriceData.ProductData
+                                                                                                                                .builder()
+                                                                                                                                .setName(description)
+                                                                                                                                .build())
+                                                                                                .build())
                                                                 .build())
-                                                .build())
-                                .build())
-                .build();
+                                .build();
 
-        Session session = Session.create(params);
-        return new PaymentResponse(session.getUrl(), session.getId());
-    }
+                Session session = Session.create(params);
+                return new PaymentResponse(session.getUrl(), session.getId());
+        }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import MembershipService from "../services/membership.service";
 
@@ -6,20 +6,24 @@ const PaymentSuccess = () => {
     const [searchParams] = useSearchParams();
     const planId = searchParams.get("planId");
     const [status, setStatus] = useState("processing");
+    const activated = useRef(false);
 
     useEffect(() => {
-        if (planId) {
-            MembershipService.subscribeToPlan(planId).then(
+        const sessionId = searchParams.get("session_id");
+        if (planId && !activated.current) {
+            activated.current = true;
+            MembershipService.subscribeToPlan(planId, sessionId).then(
                 () => {
                     setStatus("success");
                 },
                 (err) => {
                     console.error("Activation error", err);
                     setStatus("error");
+                    activated.current = false; // Reset on error so they can retry
                 }
             );
         }
-    }, [planId]);
+    }, [planId, searchParams]);
 
     return (
         <div className="container mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[60vh]">
