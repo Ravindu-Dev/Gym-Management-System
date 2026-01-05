@@ -24,20 +24,12 @@ const PlansPage = () => {
         );
     }, []);
 
-    const handleSubscribe = (planId) => {
+    const handleSubscribe = (planId, price) => {
         if (!currentUser) {
             navigate("/login");
             return;
         }
-
-        MembershipService.subscribe(planId).then(
-            () => {
-                navigate("/user");
-            },
-            (error) => {
-                alert("Subscription failed: " + (error.response?.data?.message || error.message));
-            }
-        );
+        navigate(`/payment?planId=${planId}&amount=${price}`);
     };
 
     return (
@@ -71,7 +63,7 @@ const PlansPage = () => {
                                 <p className="text-sm text-gray-500">Duration: {plan.durationInMonths} Months</p>
                             </div>
                             <button
-                                onClick={() => handleSubscribe(plan.id)}
+                                onClick={() => handleSubscribe(plan.id, plan.price)}
                                 className="w-full mt-8 btn-primary"
                             >
                                 {currentUser ? "Subscribe Now" : "Login to Subscribe"}

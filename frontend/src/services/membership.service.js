@@ -28,6 +28,7 @@ const getMySubscriptions = () => {
 const MembershipService = {
     getAllPlans,
     subscribe,
+    subscribeToPlan: subscribe,
     getMySubscriptions
 };
 

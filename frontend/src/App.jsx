@@ -14,6 +14,9 @@ import AdminAnalytics from "./components/AdminAnalytics";
 import WorkoutTracker from "./components/WorkoutTracker";
 import MemberQR from "./components/MemberQR";
 import AdminScanner from "./components/AdminScanner";
+import PaymentPage from "./components/PaymentPage";
+import PaymentSuccess from "./components/PaymentSuccess";
+import PaymentCancel from "./components/PaymentCancel";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -114,6 +117,9 @@ function App() {
           <Route path="/admin/scan" element={<AdminScanner />} />
           <Route path="/workouts" element={<WorkoutTracker />} />
           <Route path="/my-qr" element={<MemberQR />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment/success" element={<PaymentSuccess />} />
+          <Route path="/payment/cancel" element={<PaymentCancel />} />
         </Routes>
       </div>
     </div>
