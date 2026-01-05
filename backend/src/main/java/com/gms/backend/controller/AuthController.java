@@ -85,6 +85,7 @@ public class AuthController {
                 signUpRequest.getUsername(),
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getEmail(),
+                null, null, null, null, null,
                 signUpRequest.getRoles());
 
         // Default role assignment logic if needed:

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import UserService from "../services/user.service";
 import axios from "axios";
 import AuthService from "../services/auth.service";
+import authHeader from "../services/auth-header";
 import { Link, useNavigate } from "react-router-dom";
 
 const API_URL = "http://localhost:8081/api/equipment";
@@ -18,15 +19,6 @@ const AdminBoard = () => {
         navigate("/login");
         window.location.reload();
     };
-
-    const authHeader = () => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (user && user.token) {
-            return { Authorization: 'Bearer ' + user.token };
-        } else {
-            return {};
-        }
-    }
 
     useEffect(() => {
         UserService.getAdminBoard().then(

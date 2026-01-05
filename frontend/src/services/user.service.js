@@ -1,39 +1,45 @@
 import axios from "axios";
-import AuthService from "./auth.service";
+import authHeader from "./auth-header";
 
-const API_URL = "http://localhost:8081/api/test/";
+const API_URL = "http://localhost:8081/api/users/";
+const TEST_URL = "http://localhost:8081/api/test/";
 
 const getPublicContent = () => {
-    return axios.get(API_URL + "all");
+    return axios.get(TEST_URL + "all");
 };
 
 const getUserBoard = () => {
-    return axios.get(API_URL + "user", { headers: authHeader() });
+    return axios.get(TEST_URL + "user", { headers: authHeader() });
 };
 
 const getModeratorBoard = () => {
-    return axios.get(API_URL + "mod", { headers: authHeader() });
+    return axios.get(TEST_URL + "mod", { headers: authHeader() });
 };
 
 const getAdminBoard = () => {
-    return axios.get(API_URL + "admin", { headers: authHeader() });
+    return axios.get(TEST_URL + "admin", { headers: authHeader() });
 };
 
-const authHeader = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+const getUserProfile = () => {
+    return axios.get(API_URL + "profile", { headers: authHeader() });
+};
 
-    if (user && user.token) {
-        return { Authorization: 'Bearer ' + user.token };
-    } else {
-        return {};
-    }
-}
+const updateUserProfile = (profileData) => {
+    return axios.put(API_URL + "profile", profileData, { headers: authHeader() });
+};
+
+const deleteUserProfile = () => {
+    return axios.delete(API_URL + "profile", { headers: authHeader() });
+};
 
 const UserService = {
     getPublicContent,
     getUserBoard,
     getModeratorBoard,
     getAdminBoard,
+    getUserProfile,
+    updateUserProfile,
+    deleteUserProfile,
 };
 
 export default UserService;

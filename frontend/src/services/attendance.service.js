@@ -1,16 +1,7 @@
 import axios from "axios";
-import AuthService from "./auth.service";
+import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:8081/api/attendance";
-
-const authHeader = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.token) {
-        return { Authorization: 'Bearer ' + user.token };
-    } else {
-        return {};
-    }
-}
 
 const getMyAttendance = () => {
     return axios.get(API_URL + "/my", { headers: authHeader() });

@@ -1,15 +1,7 @@
 import axios from "axios";
+import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:8081/api/payment";
-
-const authHeader = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.token) {
-        return { Authorization: 'Bearer ' + user.token };
-    } else {
-        return {};
-    }
-}
 
 const createCheckoutSession = (planId, amount, description) => {
     return axios.post(API_URL + "/create-checkout-session/" + planId, {
