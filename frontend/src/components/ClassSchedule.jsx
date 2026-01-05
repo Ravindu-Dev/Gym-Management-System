@@ -8,9 +8,14 @@ const ClassSchedule = () => {
     const [currentUser, setCurrentUser] = useState(undefined);
     const navigate = useNavigate();
 
+    const [isAdmin, setIsAdmin] = useState(false);
+
     useEffect(() => {
         const user = AuthService.getCurrentUser();
-        if (user) setCurrentUser(user);
+        if (user) {
+            setCurrentUser(user);
+            setIsAdmin(user.roles.includes("ROLE_ADMIN"));
+        }
         loadClasses();
     }, []);
 
@@ -91,7 +96,11 @@ const ClassSchedule = () => {
                             </div>
                         </div>
 
-                        {isEnrolled(c) ? (
+                        {isAdmin ? (
+                            <div className="text-center py-2 bg-dark-900 rounded-lg text-gray-500 text-sm italic">
+                                Preview Mode (Admin)
+                            </div>
+                        ) : isEnrolled(c) ? (
                             <button disabled className="w-full bg-green-900/50 text-green-300 border border-green-600 py-2 rounded-lg font-medium cursor-default">
                                 Enrolled ✓
                             </button>

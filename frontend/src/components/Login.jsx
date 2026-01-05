@@ -23,8 +23,12 @@ const Login = () => {
         }
 
         AuthService.login(username, password).then(
-            () => {
-                navigate("/profile");
+            (data) => {
+                if (data.roles.includes("ROLE_ADMIN")) {
+                    navigate("/admin");
+                } else {
+                    navigate("/profile");
+                }
                 window.location.reload();
             },
             (error) => {

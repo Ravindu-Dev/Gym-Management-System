@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import WorkoutService from "../services/workout.service";
+import AuthService from "../services/auth.service";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const WorkoutTracker = () => {
@@ -12,7 +13,13 @@ const WorkoutTracker = () => {
         exercises: [{ name: "", sets: 0, reps: 0, weight: 0 }]
     });
 
+    const [isAdmin, setIsAdmin] = useState(false);
+
     useEffect(() => {
+        const user = AuthService.getCurrentUser();
+        if (user) {
+            setIsAdmin(user.roles.includes("ROLE_ADMIN"));
+        }
         loadWorkouts();
     }, []);
 
@@ -67,12 +74,17 @@ const WorkoutTracker = () => {
         <div className="container mx-auto px-4 py-8">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold text-white">Workout Tracker</h1>
-                <button
-                    onClick={() => setShowForm(!showForm)}
-                    className="btn-primary"
-                >
-                    {showForm ? "Cancel" : "Log Workout"}
-                </button>
+                {!isAdmin && (
+                    <button
+                        onClick={() => setShowForm(!showForm)}
+                        className="btn-primary"
+                    >
+                        {showForm ? "Cancel" : "Log Workout"}
+                    </button>
+                )}
+                {isAdmin && (
+                    <span className="text-gray-500 italic">View Only Mode</span>
+                )}
             </div>
 
             {showForm && (
