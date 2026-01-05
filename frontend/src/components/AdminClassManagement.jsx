@@ -58,7 +58,7 @@ const AdminClassManagement = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-6 py-10">
             <div className="flex justify-between items-center mb-8">
                 <div className="flex items-center space-x-6">
                     <Link to="/admin" className="w-10 h-10 bg-dark-800 rounded-xl flex items-center justify-center text-gray-400 hover:text-primary-500 hover:bg-primary-900/20 transition-all border border-dark-700">
