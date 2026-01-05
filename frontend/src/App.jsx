@@ -20,6 +20,7 @@ import PaymentCancel from "./components/PaymentCancel";
 import UserLayout from "./components/UserLayout";
 import About from "./components/About";
 import Contact from "./components/Contact";
+import Footer from "./components/Footer";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(() => AuthService.getCurrentUser());
@@ -117,6 +118,7 @@ function App() {
           <Route path="/payment/cancel" element={<PaymentCancel />} />
         </Routes>
       </div>
+      {showPublicNavbar && <Footer />}
     </div>
   );
 }
