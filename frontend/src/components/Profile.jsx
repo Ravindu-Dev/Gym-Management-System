@@ -94,14 +94,14 @@ const Profile = () => {
 
     return (
         <div className="max-w-4xl mx-auto px-4 py-8">
-            <div className="bg-dark-800/50 backdrop-blur-xl border border-dark-700 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="bg-gmsdark-800/50 backdrop-blur-xl border border-gmsdark-700 rounded-2xl overflow-hidden shadow-2xl">
                 {/* Header/Banner Section */}
                 <div className="h-32 bg-gradient-to-r from-primary-600 to-primary-900"></div>
 
                 <div className="px-8 pb-8">
                     <div className="relative flex justify-between items-end -mt-12 mb-6">
                         <div className="flex items-end gap-6">
-                            <div className="w-32 h-32 rounded-2xl bg-dark-900 border-4 border-dark-800 flex items-center justify-center text-4xl font-bold text-white shadow-xl overflow-hidden">
+                            <div className="w-32 h-32 rounded-2xl bg-gmsdark-900 border-4 border-gmsdark-800 flex items-center justify-center text-4xl font-bold text-white shadow-xl overflow-hidden">
                                 {formData.profileImageUrl ? (
                                     <img src={formData.profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
                                 ) : (
@@ -178,7 +178,7 @@ const Profile = () => {
                                         name="address"
                                         value={formData.address}
                                         onChange={handleInputChange}
-                                        className="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary-500 transition-colors"
+                                        className="w-full bg-gmsdark-900 border border-gmsdark-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary-500 transition-colors"
                                         placeholder="Home or work address"
                                     />
                                 </div>

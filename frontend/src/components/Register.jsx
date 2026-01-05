@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import { isEmail } from "validator";
 
@@ -68,8 +68,18 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
-            <div className="card w-full max-w-md space-y-8">
+        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6">
+            <div className="glass-panel w-full max-w-md p-8 space-y-8 relative">
+                {/* Close Button */}
+                <Link
+                    to="/"
+                    className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all duration-200"
+                    title="Close and return home"
+                >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </Link>
                 <div className="text-center">
                     <h2 className="mt-6 text-3xl font-extrabold text-white">Create an account</h2>
                     <p className="mt-2 text-sm text-gray-400">Join our community today</p>

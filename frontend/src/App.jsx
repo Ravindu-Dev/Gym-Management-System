@@ -17,6 +17,9 @@ import AdminScanner from "./components/AdminScanner";
 import PaymentPage from "./components/PaymentPage";
 import PaymentSuccess from "./components/PaymentSuccess";
 import PaymentCancel from "./components/PaymentCancel";
+import UserLayout from "./components/UserLayout";
+import About from "./components/About";
+import Contact from "./components/Contact";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(() => AuthService.getCurrentUser());
@@ -48,99 +51,67 @@ function App() {
   };
 
   const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
+  const isMemberRoute = ["/user", "/profile", "/classes", "/workouts", "/my-qr", "/plans"].includes(location.pathname);
+  const showPublicNavbar = !isAuthPage && !isAdmin && (!isMember || !isMemberRoute);
 
   return (
-    <div className="min-h-screen bg-dark-900 text-gray-100 font-sans">
-      {!isAuthPage && !isAdmin && (
-        <nav className="bg-dark-800 border-b border-dark-700 shadow-sm sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-16">
-              <div className="flex items-center">
-                <Link to={"/"} className="text-2xl font-bold text-primary-500 tracking-tight">
-                  GMS
+    <div className="min-h-screen bg-gmsdark-950 text-gray-100 font-sans">
+      {showPublicNavbar && (
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-gmsdark-950/80 backdrop-blur-lg border-b border-white/5">
+          <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <Link to="/" className="text-3xl font-display font-bold heading-gradient tracking-tighter">
+              GMS
+            </Link>
+
+            <div className="hidden md:flex items-center space-x-8">
+              <Link to="/home" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Home</Link>
+              <Link to="/about" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">About</Link>
+              <Link to="/contact" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Contact</Link>
+              <Link to="/classes" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Classes</Link>
+              <Link to="/plans" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Plans</Link>
+            </div>
+
+            <div className="flex items-center space-x-4">
+              {currentUser ? (
+                <Link to={isAdmin ? "/admin" : "/user"} className="btn-primary">
+                  Dashboard
                 </Link>
-                <div className="hidden md:ml-6 md:flex md:space-x-8">
-                  <Link to={"/home"} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                    Home
-                  </Link>
-                  {isMember && (
-                    <Link to={"/user"} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                      Dashboard
-                    </Link>
-                  )}
-                  {isAdmin && (
-                    <Link to={"/admin"} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                      Admin Panel
-                    </Link>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-center">
-                {currentUser ? (
-                  <div className="flex items-center space-x-4">
-                    {/* User specific profile/logout */}
-                    {!isAdmin && (
-                      <Link to={"/profile"} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                        {currentUser.username}
-                      </Link>
-                    )}
-                    {isAdmin && (
-                      <span className="text-primary-400 font-medium px-3 py-2 text-sm">
-                        Admin: {currentUser.username}
-                      </span>
-                    )}
-
-                    <button onClick={logOut} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer">
-                      LogOut
-                    </button>
-
-                    {/* Features only for members */}
-                    {isMember && (
-                      <>
-                        <Link to={"/classes"} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                          Classes
-                        </Link>
-                        <Link to={"/workouts"} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                          Workouts
-                        </Link>
-                      </>
-                    )}
-                  </div>
-                ) : (
-                  <div className="flex items-center space-x-4">
-                    <Link to={"/classes"} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                      Classes
-                    </Link>
-                    <Link to={"/login"} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                      Login
-                    </Link>
-                    <Link to={"/register"} className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg hover:shadow-primary-500/30">
-                      Sign Up
-                    </Link>
-                  </div>
-                )}
-              </div>
+              ) : (
+                <>
+                  <Link to="/login" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Login</Link>
+                  <Link to="/register" className="btn-primary">Sign Up</Link>
+                </>
+              )}
             </div>
           </div>
         </nav>
       )}
 
-      <div className="container mx-auto px-4 py-8">
+      <div className={showPublicNavbar ? "pt-20" : ""}>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={currentUser ? <Profile /> : <Navigate to="/login" />} />
+          <Route path="/plans" element={isMember ? <UserLayout user={currentUser}><PlansPage /></UserLayout> : <PlansPage />} />
+          <Route path="/classes" element={isMember ? <UserLayout user={currentUser}><ClassSchedule /></UserLayout> : <ClassSchedule />} />
+
+          {/* Member Protected Routes */}
+          <Route path="/user" element={isMember ? <UserLayout user={currentUser}><UserBoard /></UserLayout> : <Navigate to="/login" />} />
+          <Route path="/profile" element={isMember ? <UserLayout user={currentUser}><Profile /></UserLayout> : <Navigate to="/login" />} />
+          <Route path="/workouts" element={isMember ? <UserLayout user={currentUser}><WorkoutTracker /></UserLayout> : <Navigate to="/login" />} />
+          <Route path="/my-qr" element={isMember ? <UserLayout user={currentUser}><MemberQR /></UserLayout> : <Navigate to="/login" />} />
+
+          {/* Admin Routes (Kept as is for now, or potentially wrap in AdminLayout) */}
           <Route path="/admin" element={isAdmin ? <AdminBoard /> : <Navigate to="/home" />} />
-          <Route path="/plans" element={<PlansPage />} />
-          <Route path="/user" element={isMember ? <UserBoard /> : <Navigate to="/home" />} />
-          <Route path="/classes" element={<ClassSchedule />} />
           <Route path="/admin/classes" element={isAdmin ? <AdminClassManagement /> : <Navigate to="/home" />} />
           <Route path="/admin/analytics" element={isAdmin ? <AdminAnalytics /> : <Navigate to="/home" />} />
           <Route path="/admin/scan" element={isAdmin ? <AdminScanner /> : <Navigate to="/home" />} />
-          <Route path="/workouts" element={isMember ? <WorkoutTracker /> : <Navigate to="/home" />} />
-          <Route path="/my-qr" element={isMember ? <MemberQR /> : <Navigate to="/home" />} />
+
+          {/* Payment Routes */}
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="/payment/cancel" element={<PaymentCancel />} />
