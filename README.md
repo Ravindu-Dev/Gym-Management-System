@@ -96,4 +96,8 @@ For technical support or membership inquiries, visit our **Contact Page** or rea
 **support@gms-fitness.com**
 
 ---
+
+## 📜 License
+This project is licensed under the **MIT License** - see the [LICENSE](file:///c:/Users/user/Desktop/GMS/LICENSE) file for details.
+
 *Built with ❤️ for the Fitness Community.*
