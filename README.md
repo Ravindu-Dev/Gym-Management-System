@@ -1,159 +1,99 @@
-# Gym Management System (GMS)
+# 🏋️‍♂️ GMS - Ultimate Gym Management System
 
-A full-stack web application for managing gym memberships, equipment, and user subscriptions.
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![React](https://img.shields.io/badge/frontend-React%2019-61dafb.svg)
+![SpringBoot](https://img.shields.io/badge/backend-Spring%20Boot%203.2-6db33f.svg)
+![MongoDB](https://img.shields.io/badge/database-MongoDB-47a248.svg)
 
-## Features
+**GMS (Gym Management System)** is a premium, full-stack fitness ecosystem designed for modern gym owners and members. It features a cutting-edge **Glassmorphism UI**, a robust trainer-booking marketplace, and a contactless entry pass system.
 
-- **User Authentication**: JWT-based authentication with role-based access control
-- **Membership Management**: Create and manage membership plans
-- **Equipment Tracking**: Admin panel for managing gym equipment
-- **Subscription Management**: Users can subscribe to membership plans
-- **Responsive UI**: Modern React frontend with Tailwind CSS
+---
 
-## Tech Stack
+## ✨ Key Features
 
-### Backend
-- Spring Boot 3.2.1
-- MongoDB
-- JWT Authentication
-- Spring Security
+### 🌟 Premium Experience
+- **Adaptive Dark Mode**: A stunning obsidian-themed interface with glassmorphism effects.
+- **Contactless Entry**: Digital Member QR Passes for instant gym access.
+- **Interactive Contact**: Integrated with **EmailJS** for direct user-to-admin communication.
 
-### Frontend
-- React 19
-- Vite
-- Tailwind CSS
-- Axios for API calls
+### 👤 For Members
+- **Membership Management**: Browser and subscribe to tailored gym plans.
+- **Trainer Marketplace**: Browse certified trainers, view profiles, and book sessions.
+- **Personal Dashboard**: Track your bookings, manage your profile, and access your digital Entry Pass.
 
-## Prerequisites
+### 👟 For Trainers
+- **Professional Profiles**: Show off specializations, experience, and certifications.
+- **Booking Management**: Accept or reject session requests in real-time.
+- **Performance Tracking**: View scheduled and completed sessions.
 
-- Java 17 (JDK)
-- Apache Maven (for building the backend)
-- MongoDB (running on localhost:27017)
-- Node.js 18+
-- npm
+### 🛡️ For Admins
+- **Entry Scanner**: Integrated **Webcam QR Scanner** for member check-ins.
+- **Strategic Control**: Manage trainer approvals, equipment inventory, and user analytics.
+- **Financial Overview**: Monitor membership subscriptions and revenue growth.
 
-### Installing Prerequisites
+---
 
-1. **Java 17**: Download and install from [Adoptium](https://adoptium.net/) or [Oracle](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+## 🛠 Tech Stack
 
-2. **Apache Maven**: Download from [maven.apache.org](https://maven.apache.org/download.cgi) and add to PATH
+| Backend | Frontend | Aesthetics/Tools |
+| :--- | :--- | :--- |
+| **Java 17** | **React 19 (Vite)** | **Tailwind CSS** |
+| **Spring Boot 3** | **Axios API** | **Glassmorphism Design** |
+| **Spring Security** | **React Router 7** | **EmailJS Integration** |
+| **MongoDB** | **Recharts** | **Html5-QRCode Scanner** |
+| **JWT (Auth)** | **Lucide Icons** | **React-QR-Code** |
 
-3. **MongoDB**: Download and install from [mongodb.com](https://www.mongodb.com/try/download/community)
+---
 
-4. **Node.js**: Download from [nodejs.org](https://nodejs.org/)
+## 🚀 Installation & Setup
 
-## Installation & Setup
+### Prerequisites
+- **Java 17+** & **Maven**
+- **Node.js 18+** & **npm**
+- **MongoDB** (Local or Atlas)
 
-### Backend Setup
-
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-
-2. The application is already compiled. To run:
-   ```bash
-   # If using Maven wrapper (if available)
-   ./mvnw spring-boot:run
-
-   # Or if Maven is installed globally
-   mvn spring-boot:run
-   ```
-
-3. The backend will start on `http://localhost:8080`
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-4. The frontend will start on `http://localhost:5173` (or similar port shown in console)
-
-## Default Data
-
-The application comes with pre-configured membership plans:
-- **Basic**: $29.99/month - Access to basic gym facilities
-- **Premium**: $49.99/month - Full access to all facilities and classes
-- **Annual**: $499.99/year - Year-long membership with all benefits
-
-## Usage
-
-1. **Registration**: Users can register for a new account
-2. **Login**: Authenticate with username/password
-3. **Browse Plans**: View available membership plans
-4. **Subscribe**: Subscribe to membership plans
-5. **Admin Panel**: Admin users can manage equipment and view system status
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/signup` - User registration
-- `POST /api/auth/signin` - User login
-
-### Membership
-- `GET /api/membership/plans` - Get all membership plans
-- `POST /api/membership/plans` - Create new plan (Admin only)
-- `POST /api/membership/subscribe/{planId}` - Subscribe to plan
-- `GET /api/membership/my-subscriptions` - Get user's subscriptions
-
-### Equipment
-- `GET /api/equipment` - Get all equipment
-- `POST /api/equipment` - Add new equipment (Admin only)
-- `DELETE /api/equipment/{id}` - Delete equipment (Admin only)
-
-## Security
-
-- JWT tokens are stored in localStorage
-- Role-based access control (USER, ADMIN)
-- CORS enabled for frontend-backend communication
-
-## Development
-
-### Building for Production
-
+### 1. Backend Setup
 ```bash
-# Backend
 cd backend
-mvn clean package
+mvn spring-boot:run
+```
+*Server starts on `http://localhost:8080`*
 
-# Frontend
+### 2. Frontend Setup
+```bash
 cd frontend
-npm run build
+npm install
+npm run dev
 ```
+*Vite server starts on `http://localhost:5173`*
 
-## Troubleshooting
+---
 
-1. **MongoDB Connection**: Ensure MongoDB is running on localhost:27017
-2. **Port Conflicts**: Backend runs on port 8080, frontend on 5173
-3. **CORS Issues**: CORS is configured to allow all origins in development
+## 🔐 Security & Roles
+GMS implements strict **JWT-based Authentication** with 3 distinct roles:
+1. **ROLE_MEMBER**: Access to bookings, plans, and entry pass.
+2. **ROLE_TRAINER**: Manage session requests and professional profiles.
+3. **ROLE_ADMIN**: Full system oversight, entry scanning, and trainer approval.
 
-## Project Structure
+---
 
-```
+## 📂 Project Structure
+```text
 GMS/
-├── backend/
-│   ├── src/main/java/com/gms/backend/
-│   │   ├── controller/
-│   │   ├── model/
-│   │   ├── repository/
-│   │   ├── service/
-│   │   └── security/
-│   └── pom.xml
-└── frontend/
-    ├── src/
-    │   ├── components/
-    │   ├── services/
-    │   └── App.jsx
-    └── package.json
+├── backend/            # Spring Boot Application
+│   ├── src/main/java/  # Architecture: Controller -> Service -> Repository
+│   └── src/resources/  # Configuration & Database properties
+└── frontend/           # React 19 Frontend
+    ├── src/components/ # Modular Glassmorphism UI Components
+    ├── src/services/   # API Integration Layer
+    └── src/index.css   # Custom Utility Classes & Design Tokens
+```
+
+---
+
+## 📧 Support
+For technical support or membership inquiries, visit our **Contact Page** or reach out to:
+**support@gms-fitness.com**
+
+---
+*Built with ❤️ for the Fitness Community.*
