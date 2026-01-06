@@ -213,6 +213,46 @@ const TrainerDashboard = () => {
                                                         </span>
                                                     </div>
                                                     <p className="text-sm text-gray-400">{booking.workoutType}</p>
+                                                    {booking.sessionDateTime && (
+                                                        <div className="flex items-center space-x-2 text-sm text-gray-300">
+                                                            <svg className="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                            </svg>
+                                                            <span>{new Date(booking.sessionDateTime).toLocaleString()}</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Rejected Bookings */}
+                                <div>
+                                    <h2 className="text-xl font-bold text-white mb-4">Rejected Sessions ({rejectedBookings.length})</h2>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {rejectedBookings.length === 0 ? (
+                                            <div className="col-span-full glass-panel p-8 text-center">
+                                                <p className="text-gray-400">No rejected bookings.</p>
+                                            </div>
+                                        ) : (
+                                            rejectedBookings.map((booking) => (
+                                                <div key={booking.id} className="glass-panel p-6 space-y-3 opacity-75">
+                                                    <div className="flex justify-between items-start">
+                                                        <h3 className="text-lg font-semibold text-white">{booking.userName}</h3>
+                                                        <span className="px-2 py-1 bg-red-900/50 text-red-500 text-xs font-medium rounded-full border border-red-500/50">
+                                                            REJECTED
+                                                        </span>
+                                                    </div>
+                                                    <p className="text-sm text-gray-400">{booking.workoutType}</p>
+                                                    {booking.sessionDateTime && (
+                                                        <div className="flex items-center space-x-2 text-sm text-gray-300">
+                                                            <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                            </svg>
+                                                            <span>{new Date(booking.sessionDateTime).toLocaleString()}</span>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             ))
                                         )}

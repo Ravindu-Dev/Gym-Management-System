@@ -24,6 +24,7 @@ import Footer from "./components/Footer";
 import AdminTrainerManagement from "./components/AdminTrainerManagement";
 import TrainerDashboard from "./components/TrainerDashboard";
 import BookTrainer from "./components/BookTrainer";
+import MyBookings from "./components/MyBookings";
 import BookingService from "./services/booking.service";
 
 function App() {
@@ -127,6 +128,7 @@ function App() {
 
           {/* User Booking Route */}
           <Route path="/book-trainer" element={isMember ? <UserLayout user={currentUser}><BookTrainer /></UserLayout> : <Navigate to="/login" />} />
+          <Route path="/my-bookings" element={isMember ? <UserLayout user={currentUser}><MyBookings /></UserLayout> : <Navigate to="/login" />} />
 
           {/* Payment Routes */}
           <Route path="/payment" element={<PaymentPage />} />
