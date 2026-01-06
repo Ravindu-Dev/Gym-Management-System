@@ -36,7 +36,10 @@ public class UserController {
                 user.getAddress(),
                 user.getBio(),
                 user.getProfileImageUrl(),
-                user.getRoles());
+                user.getRoles(),
+                user.getSpecialization(),
+                user.getGender(),
+                user.getAge());
 
         return ResponseEntity.ok(profile);
     }
@@ -54,6 +57,17 @@ public class UserController {
         user.setAddress(profileDTO.getAddress());
         user.setBio(profileDTO.getBio());
         user.setProfileImageUrl(profileDTO.getProfileImageUrl());
+
+        // Update trainer-specific fields if provided
+        if (profileDTO.getSpecialization() != null) {
+            user.setSpecialization(profileDTO.getSpecialization());
+        }
+        if (profileDTO.getGender() != null) {
+            user.setGender(profileDTO.getGender());
+        }
+        if (profileDTO.getAge() != null) {
+            user.setAge(profileDTO.getAge());
+        }
 
         userRepository.save(user);
 

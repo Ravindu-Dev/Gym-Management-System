@@ -18,4 +18,9 @@ public class UserProfileDTO {
     private String bio;
     private String profileImageUrl;
     private Set<String> roles;
+
+    // Trainer-specific fields
+    private String specialization;
+    private String gender;
+    private Integer age;
 }

@@ -23,6 +23,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import AdminTrainerManagement from "./components/AdminTrainerManagement";
 import TrainerDashboard from "./components/TrainerDashboard";
+import TrainerProfile from "./components/TrainerProfile";
 import BookTrainer from "./components/BookTrainer";
 import MyBookings from "./components/MyBookings";
 import BookingService from "./services/booking.service";
@@ -125,6 +126,7 @@ function App() {
 
           {/* Trainer Routes */}
           <Route path="/trainer-dashboard" element={isTrainer ? <TrainerDashboard /> : <Navigate to="/login" />} />
+          <Route path="/trainer-profile" element={isTrainer ? <TrainerProfile /> : <Navigate to="/login" />} />
 
           {/* User Booking Route */}
           <Route path="/book-trainer" element={isMember ? <UserLayout user={currentUser}><BookTrainer /></UserLayout> : <Navigate to="/login" />} />
