@@ -21,6 +21,10 @@ import UserLayout from "./components/UserLayout";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import AdminTrainerManagement from "./components/AdminTrainerManagement";
+import TrainerDashboard from "./components/TrainerDashboard";
+import BookTrainer from "./components/BookTrainer";
+import BookingService from "./services/booking.service";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(() => AuthService.getCurrentUser());
@@ -32,6 +36,10 @@ function App() {
     const user = AuthService.getCurrentUser();
     return user ? user.roles.includes("ROLE_USER") : false;
   });
+  const [isTrainer, setIsTrainer] = useState(() => {
+    const user = AuthService.getCurrentUser();
+    return user ? user.roles.includes("ROLE_TRAINER") : false;
+  });
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,6 +50,7 @@ function App() {
       setCurrentUser(user);
       setIsAdmin(user.roles.includes("ROLE_ADMIN"));
       setIsMember(user.roles.includes("ROLE_USER"));
+      setIsTrainer(user.roles.includes("ROLE_TRAINER"));
     }
   }, []);
 
@@ -111,6 +120,13 @@ function App() {
           <Route path="/admin/classes" element={isAdmin ? <AdminClassManagement /> : <Navigate to="/home" />} />
           <Route path="/admin/analytics" element={isAdmin ? <AdminAnalytics /> : <Navigate to="/home" />} />
           <Route path="/admin/scan" element={isAdmin ? <AdminScanner /> : <Navigate to="/home" />} />
+          <Route path="/admin/trainers" element={isAdmin ? <AdminTrainerManagement /> : <Navigate to="/home" />} />
+
+          {/* Trainer Routes */}
+          <Route path="/trainer-dashboard" element={isTrainer ? <TrainerDashboard /> : <Navigate to="/login" />} />
+
+          {/* User Booking Route */}
+          <Route path="/book-trainer" element={isMember ? <UserLayout user={currentUser}><BookTrainer /></UserLayout> : <Navigate to="/login" />} />
 
           {/* Payment Routes */}
           <Route path="/payment" element={<PaymentPage />} />

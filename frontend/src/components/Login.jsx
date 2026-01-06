@@ -26,6 +26,8 @@ const Login = () => {
             (data) => {
                 if (data.roles.includes("ROLE_ADMIN")) {
                     navigate("/admin");
+                } else if (data.roles.includes("ROLE_TRAINER")) {
+                    navigate("/trainer-dashboard");
                 } else {
                     navigate("/profile");
                 }

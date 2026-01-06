@@ -25,5 +25,8 @@ public class User {
     private String bio;
     private String profileImageUrl;
 
+    private String status; // PENDING, APPROVED, REJECTED
+    private String specialization;
+
     private Set<String> roles;
 }

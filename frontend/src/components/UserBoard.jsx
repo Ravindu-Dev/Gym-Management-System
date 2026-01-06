@@ -122,7 +122,7 @@ const UserBoard = () => {
                     </div>
 
                     {/* Quick Shortcuts */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <Link to="/classes" className="glass-card group hover:border-primary-500/30">
                             <div className="flex items-center justify-between mb-4">
                                 <span className="text-3xl">🗓️</span>
@@ -138,6 +138,14 @@ const UserBoard = () => {
                             </div>
                             <h3 className="text-lg font-bold mb-1 italic">Log Workout</h3>
                             <p className="text-sm text-gray-400">Keep track of your reps, sets, and progress.</p>
+                        </Link>
+                        <Link to="/book-trainer" className="glass-card group hover:border-orange-500/30">
+                            <div className="flex items-center justify-between mb-4">
+                                <span className="text-3xl">🏋️</span>
+                                <span className="text-gray-500 group-hover:text-orange-400 transition-colors">→</span>
+                            </div>
+                            <h3 className="text-lg font-bold mb-1 italic">Book a Trainer</h3>
+                            <p className="text-sm text-gray-400">Get personalized training sessions.</p>
                         </Link>
                     </div>
                 </div>

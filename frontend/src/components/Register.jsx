@@ -11,6 +11,8 @@ const Register = () => {
     const [successful, setSuccessful] = useState(false);
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const [isTrainer, setIsTrainer] = useState(false);
+    const [specialization, setSpecialization] = useState("");
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -43,7 +45,9 @@ const Register = () => {
             return;
         }
 
-        AuthService.register(username, email, password).then(
+        const roles = isTrainer ? ["ROLE_TRAINER"] : ["ROLE_USER"];
+
+        AuthService.register(username, email, password, roles, isTrainer ? specialization : null).then(
             (response) => {
                 setMessage(response.data.message);
                 setSuccessful(true);
@@ -123,6 +127,47 @@ const Register = () => {
                                     placeholder="••••••••"
                                 />
                             </div>
+
+                            <div className="flex items-center space-x-4 py-2">
+                                <label className="text-sm font-medium text-gray-300">Register as:</label>
+                                <div className="flex items-center space-x-4">
+                                    <label className="flex items-center cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            className="form-radio h-4 w-4 text-primary bg-white/5 border-white/10"
+                                            name="role"
+                                            checked={!isTrainer}
+                                            onChange={() => setIsTrainer(false)}
+                                        />
+                                        <span className="ml-2 text-sm text-gray-300">User</span>
+                                    </label>
+                                    <label className="flex items-center cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            className="form-radio h-4 w-4 text-primary bg-white/5 border-white/10"
+                                            name="role"
+                                            checked={isTrainer}
+                                            onChange={() => setIsTrainer(true)}
+                                        />
+                                        <span className="ml-2 text-sm text-gray-300">Trainer</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            {isTrainer && (
+                                <div className="animate-fadeIn">
+                                    <label htmlFor="specialization" className="block text-sm font-medium text-gray-300">Specialization</label>
+                                    <input
+                                        type="text"
+                                        className="input-field mt-1"
+                                        name="specialization"
+                                        value={specialization}
+                                        onChange={(e) => setSpecialization(e.target.value)}
+                                        placeholder="e.g. Yoga, Crossfit, Bodybuilding"
+                                        required
+                                    />
+                                </div>
+                            )}
                         </div>
                     )}
 

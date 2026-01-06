@@ -20,6 +20,8 @@ public class SignupRequest {
 
     private Set<String> roles;
 
+    private String specialization;
+
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;

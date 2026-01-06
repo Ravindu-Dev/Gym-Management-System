@@ -55,6 +55,18 @@ public class AuthController {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        // Check if trainer is approved
+        User user = userRepository.findById(userDetails.getId()).orElse(null);
+        if (user != null && user.getRoles().contains("ROLE_TRAINER")) {
+            if (!"APPROVED".equals(user.getStatus())) {
+                return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse(
+                                "Error: Your trainer account is pending approval or has been rejected."));
+            }
+        }
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
@@ -86,6 +98,8 @@ public class AuthController {
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getEmail(),
                 null, null, null, null, null,
+                null,
+                signUpRequest.getSpecialization(),
                 signUpRequest.getRoles());
 
         // Default role assignment logic if needed:
@@ -93,6 +107,13 @@ public class AuthController {
             Set<String> roles = new HashSet<>();
             roles.add("ROLE_USER");
             user.setRoles(roles);
+        }
+
+        // Handle status and specialization for Trainers
+        if (user.getRoles().contains("ROLE_TRAINER")) {
+            user.setStatus("PENDING");
+        } else {
+            user.setStatus("APPROVED");
         }
 
         userRepository.save(user);
