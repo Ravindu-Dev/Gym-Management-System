@@ -6,7 +6,13 @@ const BookTrainer = () => {
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState("");
     const [selectedTrainer, setSelectedTrainer] = useState(null);
+
+    // Form fields
     const [workoutType, setWorkoutType] = useState("");
+    const [sessionDateTime, setSessionDateTime] = useState("");
+    const [userWeight, setUserWeight] = useState("");
+    const [userHeight, setUserHeight] = useState("");
+    const [practicePreferences, setPracticePreferences] = useState("");
     const [bookingMessage, setBookingMessage] = useState("");
 
     useEffect(() => {
@@ -34,6 +40,10 @@ const BookTrainer = () => {
         const bookingData = {
             trainerId: selectedTrainer.id,
             workoutType: workoutType,
+            sessionDateTime: sessionDateTime,
+            userWeight: userWeight ? parseFloat(userWeight) : null,
+            userHeight: userHeight ? parseFloat(userHeight) : null,
+            practicePreferences: practicePreferences,
             message: bookingMessage
         };
 
@@ -42,10 +52,16 @@ const BookTrainer = () => {
                 setMessage("Booking request sent successfully!");
                 setSelectedTrainer(null);
                 setWorkoutType("");
+                setSessionDateTime("");
+                setUserWeight("");
+                setUserHeight("");
+                setPracticePreferences("");
                 setBookingMessage("");
+                setTimeout(() => setMessage(""), 3000);
             },
             (error) => {
                 setMessage("Failed to create booking.");
+                setTimeout(() => setMessage(""), 3000);
             }
         );
     };
@@ -58,7 +74,7 @@ const BookTrainer = () => {
             </div>
 
             {message && (
-                <div className="bg-blue-900/50 border border-blue-500 text-blue-200 px-4 py-3 rounded relative">
+                <div className="bg-blue-900/50 border border-blue-500 text-blue-200 px-4 py-3 rounded-xl relative animate-in fade-in">
                     {message}
                 </div>
             )}
@@ -111,10 +127,10 @@ const BookTrainer = () => {
                 </div>
             )}
 
-            {/* Booking Modal */}
+            {/* Enhanced Booking Modal */}
             {selectedTrainer && (
-                <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-6">
-                    <div className="glass-panel max-w-md w-full p-8 space-y-6">
+                <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-6 overflow-y-auto">
+                    <div className="glass-panel max-w-2xl w-full p-8 space-y-6 my-8">
                         <div className="flex justify-between items-start">
                             <div>
                                 <h2 className="text-2xl font-bold text-white">Book {selectedTrainer.fullName || selectedTrainer.username}</h2>
@@ -130,41 +146,106 @@ const BookTrainer = () => {
                             </button>
                         </div>
 
-                        <form onSubmit={handleBooking} className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">Workout Type</label>
-                                <input
-                                    type="text"
-                                    className="input-field"
-                                    value={workoutType}
-                                    onChange={(e) => setWorkoutType(e.target.value)}
-                                    placeholder="e.g. Strength Training, Cardio"
-                                    required
-                                />
+                        <form onSubmit={handleBooking} className="space-y-6">
+                            {/* Session Details */}
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-bold text-white border-b border-white/10 pb-2">Session Details</h3>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Workout Type *</label>
+                                        <input
+                                            type="text"
+                                            className="input-field"
+                                            value={workoutType}
+                                            onChange={(e) => setWorkoutType(e.target.value)}
+                                            placeholder="e.g. Strength Training, Cardio"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Preferred Date & Time *</label>
+                                        <input
+                                            type="datetime-local"
+                                            className="input-field"
+                                            value={sessionDateTime}
+                                            onChange={(e) => setSessionDateTime(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">Message (Optional)</label>
-                                <textarea
-                                    className="input-field"
-                                    rows="3"
-                                    value={bookingMessage}
-                                    onChange={(e) => setBookingMessage(e.target.value)}
-                                    placeholder="Any specific requirements or goals..."
-                                ></textarea>
+                            {/* Physical Details */}
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-bold text-white border-b border-white/10 pb-2">Your Physical Details</h3>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Weight (kg)</label>
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            className="input-field"
+                                            value={userWeight}
+                                            onChange={(e) => setUserWeight(e.target.value)}
+                                            placeholder="e.g. 70.5"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Height (cm)</label>
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            className="input-field"
+                                            value={userHeight}
+                                            onChange={(e) => setUserHeight(e.target.value)}
+                                            placeholder="e.g. 175"
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="flex space-x-3">
+                            {/* Practice Preferences */}
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-bold text-white border-b border-white/10 pb-2">Training Goals</h3>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-2">What do you want to practice/focus on?</label>
+                                    <textarea
+                                        className="input-field"
+                                        rows="3"
+                                        value={practicePreferences}
+                                        onChange={(e) => setPracticePreferences(e.target.value)}
+                                        placeholder="e.g. Building muscle mass, improving flexibility, weight loss..."
+                                    ></textarea>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-2">Additional Notes (Optional)</label>
+                                    <textarea
+                                        className="input-field"
+                                        rows="2"
+                                        value={bookingMessage}
+                                        onChange={(e) => setBookingMessage(e.target.value)}
+                                        placeholder="Any injuries, medical conditions, or special requirements..."
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            <div className="flex space-x-3 pt-4 border-t border-white/10">
                                 <button
                                     type="button"
                                     onClick={() => setSelectedTrainer(null)}
-                                    className="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                                    className="flex-1 px-4 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors font-medium"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 btn-primary"
+                                    className="flex-1 btn-primary py-3"
                                 >
                                     Confirm Booking
                                 </button>

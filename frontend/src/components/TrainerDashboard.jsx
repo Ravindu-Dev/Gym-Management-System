@@ -134,9 +134,47 @@ const TrainerDashboard = () => {
                                                             PENDING
                                                         </span>
                                                     </div>
-                                                    {booking.message && (
-                                                        <p className="text-sm text-gray-300 bg-white/5 p-3 rounded-lg">{booking.message}</p>
+
+                                                    {/* Session Details */}
+                                                    <div className="space-y-2 bg-white/5 p-3 rounded-lg">
+                                                        {booking.sessionDateTime && (
+                                                            <div className="flex items-center space-x-2 text-sm">
+                                                                <svg className="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                                </svg>
+                                                                <span className="text-gray-300">
+                                                                    {new Date(booking.sessionDateTime).toLocaleString()}
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                        {(booking.userWeight || booking.userHeight) && (
+                                                            <div className="flex items-center space-x-2 text-sm">
+                                                                <svg className="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                                                </svg>
+                                                                <span className="text-gray-300">
+                                                                    {booking.userWeight && `${booking.userWeight}kg`}
+                                                                    {booking.userWeight && booking.userHeight && ' • '}
+                                                                    {booking.userHeight && `${booking.userHeight}cm`}
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    {booking.practicePreferences && (
+                                                        <div className="bg-white/5 p-3 rounded-lg">
+                                                            <p className="text-xs text-gray-500 font-semibold uppercase mb-1">Practice Goals</p>
+                                                            <p className="text-sm text-gray-300">{booking.practicePreferences}</p>
+                                                        </div>
                                                     )}
+
+                                                    {booking.message && (
+                                                        <div className="bg-white/5 p-3 rounded-lg">
+                                                            <p className="text-xs text-gray-500 font-semibold uppercase mb-1">Additional Notes</p>
+                                                            <p className="text-sm text-gray-300">{booking.message}</p>
+                                                        </div>
+                                                    )}
+
                                                     <div className="flex space-x-3 pt-4 border-t border-white/5">
                                                         <button
                                                             onClick={() => handleAccept(booking.id)}

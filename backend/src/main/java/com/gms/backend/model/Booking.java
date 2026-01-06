@@ -20,7 +20,13 @@ public class Booking {
     private String trainerId;
     private String trainerName;
     private String workoutType;
-    private LocalDateTime bookingDate;
+    private LocalDateTime bookingDate; // When the booking was created
+    private LocalDateTime sessionDateTime; // When the training session is scheduled
     private String status; // PENDING, ACCEPTED, REJECTED
     private String message;
+
+    // User physical details
+    private Double userWeight; // in kg
+    private Double userHeight; // in cm
+    private String practicePreferences; // What the user wants to practice/focus on
 }

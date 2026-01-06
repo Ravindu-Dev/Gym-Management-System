@@ -50,9 +50,15 @@ public class BookingController {
         booking.setTrainerId(trainer.getId());
         booking.setTrainerName(trainer.getFullName() != null ? trainer.getFullName() : trainer.getUsername());
         booking.setWorkoutType(bookingRequest.getWorkoutType());
-        booking.setBookingDate(LocalDateTime.now()); // Or use date from request if needed
+        booking.setBookingDate(LocalDateTime.now());
+        booking.setSessionDateTime(bookingRequest.getSessionDateTime());
         booking.setStatus("PENDING");
         booking.setMessage(bookingRequest.getMessage());
+
+        // Set new fields
+        booking.setUserWeight(bookingRequest.getUserWeight());
+        booking.setUserHeight(bookingRequest.getUserHeight());
+        booking.setPracticePreferences(bookingRequest.getPracticePreferences());
 
         bookingRepository.save(booking);
         return ResponseEntity.ok(new MessageResponse("Booking requested successfully!"));
