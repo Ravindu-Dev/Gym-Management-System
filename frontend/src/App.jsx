@@ -23,7 +23,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import AdminTrainerManagement from "./components/AdminTrainerManagement";
 import TrainerDashboard from "./components/TrainerDashboard";
-import TrainerProfile from "./components/TrainerProfile";
+
 import BookTrainer from "./components/BookTrainer";
 import MyBookings from "./components/MyBookings";
 import BookingService from "./services/booking.service";
@@ -63,8 +63,9 @@ function App() {
   };
 
   const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
-  const isMemberRoute = ["/user", "/profile", "/classes", "/workouts", "/my-qr", "/plans"].includes(location.pathname);
-  const showPublicNavbar = !isAuthPage && !isAdmin && (!isMember || !isMemberRoute);
+  const isMemberRoute = ["/user", "/profile", "/classes", "/workouts", "/my-qr", "/plans", "/book-trainer", "/my-bookings"].includes(location.pathname);
+  const isTrainerRoute = ["/trainer-dashboard"].includes(location.pathname);
+  const showPublicNavbar = !isAuthPage && !isAdmin && !isTrainerRoute && (!isMember || !isMemberRoute);
 
   return (
     <div className="min-h-screen bg-gmsdark-950 text-gray-100 font-sans">
@@ -126,7 +127,7 @@ function App() {
 
           {/* Trainer Routes */}
           <Route path="/trainer-dashboard" element={isTrainer ? <TrainerDashboard /> : <Navigate to="/login" />} />
-          <Route path="/trainer-profile" element={isTrainer ? <TrainerProfile /> : <Navigate to="/login" />} />
+
 
           {/* User Booking Route */}
           <Route path="/book-trainer" element={isMember ? <UserLayout user={currentUser}><BookTrainer /></UserLayout> : <Navigate to="/login" />} />

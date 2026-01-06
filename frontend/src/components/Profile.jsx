@@ -156,7 +156,7 @@ const Profile = () => {
                                         name="fullName"
                                         value={formData.fullName}
                                         onChange={handleInputChange}
-                                        className="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary-500 transition-colors"
+                                        className="w-full bg-gmsdark-900 border border-gmsdark-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary-500 transition-colors"
                                         placeholder="Enter your full name"
                                     />
                                 </div>
@@ -167,7 +167,7 @@ const Profile = () => {
                                         name="phoneNumber"
                                         value={formData.phoneNumber}
                                         onChange={handleInputChange}
-                                        className="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary-500 transition-colors"
+                                        className="w-full bg-gmsdark-900 border border-gmsdark-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary-500 transition-colors"
                                         placeholder="Phone number"
                                     />
                                 </div>
@@ -189,7 +189,7 @@ const Profile = () => {
                                         value={formData.bio}
                                         onChange={handleInputChange}
                                         rows="3"
-                                        className="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary-500 transition-colors resize-none"
+                                        className="w-full bg-gmsdark-900 border border-gmsdark-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary-500 transition-colors resize-none"
                                         placeholder="Tell us about yourself"
                                     ></textarea>
                                 </div>
@@ -200,7 +200,7 @@ const Profile = () => {
                                         name="profileImageUrl"
                                         value={formData.profileImageUrl}
                                         onChange={handleInputChange}
-                                        className="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary-500 transition-colors"
+                                        className="w-full bg-gmsdark-900 border border-gmsdark-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-primary-500 transition-colors"
                                         placeholder="https://..."
                                     />
                                 </div>
