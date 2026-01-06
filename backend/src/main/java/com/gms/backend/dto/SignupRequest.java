@@ -21,6 +21,8 @@ public class SignupRequest {
     private Set<String> roles;
 
     private String specialization;
+    private String gender;
+    private Integer age;
 
     @NotBlank
     @Size(min = 6, max = 40)

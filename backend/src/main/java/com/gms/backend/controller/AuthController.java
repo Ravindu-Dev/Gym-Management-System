@@ -100,6 +100,8 @@ public class AuthController {
                 null, null, null, null, null,
                 null,
                 signUpRequest.getSpecialization(),
+                signUpRequest.getGender(),
+                signUpRequest.getAge(),
                 signUpRequest.getRoles());
 
         // Default role assignment logic if needed:

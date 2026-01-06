@@ -13,6 +13,8 @@ const Register = () => {
     const [loading, setLoading] = useState(false);
     const [isTrainer, setIsTrainer] = useState(false);
     const [specialization, setSpecialization] = useState("");
+    const [gender, setGender] = useState("");
+    const [age, setAge] = useState("");
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -45,9 +47,23 @@ const Register = () => {
             return;
         }
 
+        if (isTrainer && (!specialization || !gender || !age)) {
+            setMessage("Trainers must provide specialization, gender, and age.");
+            setLoading(false);
+            return;
+        }
+
         const roles = isTrainer ? ["ROLE_TRAINER"] : ["ROLE_USER"];
 
-        AuthService.register(username, email, password, roles, isTrainer ? specialization : null).then(
+        AuthService.register(
+            username,
+            email,
+            password,
+            roles,
+            isTrainer ? specialization : null,
+            isTrainer ? gender : null,
+            isTrainer ? parseInt(age) : null
+        ).then(
             (response) => {
                 setMessage(response.data.message);
                 setSuccessful(true);
@@ -166,6 +182,38 @@ const Register = () => {
                                         placeholder="e.g. Yoga, Crossfit, Bodybuilding"
                                         required
                                     />
+                                </div>
+                            )}
+
+                            {isTrainer && (
+                                <div className="grid grid-cols-2 gap-4 animate-fadeIn">
+                                    <div>
+                                        <label htmlFor="gender" className="block text-sm font-medium text-gray-300">Gender</label>
+                                        <select
+                                            className="input-field mt-1"
+                                            name="gender"
+                                            value={gender}
+                                            onChange={(e) => setGender(e.target.value)}
+                                        >
+                                            <option value="">Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label htmlFor="age" className="block text-sm font-medium text-gray-300">Age</label>
+                                        <input
+                                            type="number"
+                                            className="input-field mt-1"
+                                            name="age"
+                                            value={age}
+                                            onChange={(e) => setAge(e.target.value)}
+                                            placeholder="e.g. 25"
+                                            min="18"
+                                            max="100"
+                                        />
+                                    </div>
                                 </div>
                             )}
                         </div>

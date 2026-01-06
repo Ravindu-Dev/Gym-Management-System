@@ -27,6 +27,8 @@ public class User {
 
     private String status; // PENDING, APPROVED, REJECTED
     private String specialization;
+    private String gender; // For trainers
+    private Integer age; // For trainers
 
     private Set<String> roles;
 }
