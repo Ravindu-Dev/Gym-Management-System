@@ -19,11 +19,16 @@ const getAvailableTrainers = () => {
     return axios.get(API_URL + "bookings/trainers", { headers: authHeader() });
 };
 
+const getAllTrainers = () => {
+    return axios.get(API_URL + "admin/trainers/all", { headers: authHeader() });
+};
+
 const TrainerService = {
     getPendingTrainers,
     approveTrainer,
     rejectTrainer,
     getAvailableTrainers,
+    getAllTrainers,
 };
 
 export default TrainerService;

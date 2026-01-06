@@ -1,20 +1,23 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import TrainerService from "../services/trainer.service";
+import AuthService from "../services/auth.service";
 
 const AdminTrainerManagement = () => {
-    const [pendingTrainers, setPendingTrainers] = useState([]);
+    const [allTrainers, setAllTrainers] = useState([]);
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState("pending"); // pending, approved, rejected
 
     useEffect(() => {
-        loadPendingTrainers();
+        loadAllTrainers();
     }, []);
 
-    const loadPendingTrainers = () => {
+    const loadAllTrainers = () => {
         setLoading(true);
-        TrainerService.getPendingTrainers().then(
+        TrainerService.getAllTrainers().then(
             (response) => {
-                setPendingTrainers(response.data);
+                setAllTrainers(response.data);
                 setLoading(false);
             },
             (error) => {
@@ -34,10 +37,12 @@ const AdminTrainerManagement = () => {
         TrainerService.approveTrainer(id).then(
             () => {
                 setMessage("Trainer approved successfully!");
-                loadPendingTrainers();
+                setTimeout(() => setMessage(""), 3000);
+                loadAllTrainers();
             },
             (error) => {
                 setMessage("Could not approve trainer.");
+                setTimeout(() => setMessage(""), 3000);
             }
         );
     };
@@ -46,21 +51,44 @@ const AdminTrainerManagement = () => {
         TrainerService.rejectTrainer(id).then(
             () => {
                 setMessage("Trainer rejected successfully!");
-                loadPendingTrainers();
+                setTimeout(() => setMessage(""), 3000);
+                loadAllTrainers();
             },
             (error) => {
                 setMessage("Could not reject trainer.");
+                setTimeout(() => setMessage(""), 3000);
             }
         );
     };
 
+    const pendingTrainers = allTrainers.filter(t => t.status === "PENDING");
+    const approvedTrainers = allTrainers.filter(t => t.status === "APPROVED");
+    const rejectedTrainers = allTrainers.filter(t => t.status === "REJECTED");
+
+    const getDisplayTrainers = () => {
+        switch (activeTab) {
+            case "pending": return pendingTrainers;
+            case "approved": return approvedTrainers;
+            case "rejected": return rejectedTrainers;
+            default: return pendingTrainers;
+        }
+    };
+
     return (
-        <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-white">Trainer Registration Requests</h2>
+        <div className="container mx-auto px-6 py-10">
+            <div className="flex justify-between items-center mb-8">
+                <div className="flex items-center space-x-6">
+                    <Link to="/admin" className="w-10 h-10 bg-dark-800 rounded-xl flex items-center justify-center text-gray-400 hover:text-primary-500 hover:bg-primary-900/20 transition-all border border-dark-700">
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </Link>
+                    <div>
+                        <h2 className="text-3xl font-extrabold text-white tracking-tight">Trainer Management</h2>
+                        <p className="text-gray-400 mt-1">Approve and manage trainer registrations</p>
+                    </div>
+                </div>
                 <button
-                    onClick={loadPendingTrainers}
-                    className="p-2 bg-white/5 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-all"
+                    onClick={loadAllTrainers}
+                    className="p-3 bg-white/5 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white transition-all border border-white/5"
                     title="Refresh List"
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,58 +98,157 @@ const AdminTrainerManagement = () => {
             </div>
 
             {message && (
-                <div className="mb-4 bg-blue-900/50 border border-blue-500 text-blue-200 px-4 py-3 rounded relative">
+                <div className="mb-6 bg-blue-900/50 border border-blue-500 text-blue-200 px-4 py-3 rounded-xl relative animate-in fade-in slide-in-from-top-2 duration-300">
                     {message}
                 </div>
             )}
 
+            {/* Tabs */}
+            <div className="flex space-x-2 mb-6 border-b border-dark-700">
+                <button
+                    onClick={() => setActiveTab("pending")}
+                    className={`px-6 py-3 font-bold text-sm transition-all relative ${activeTab === "pending"
+                        ? "text-primary-400 border-b-2 border-primary-500"
+                        : "text-gray-500 hover:text-gray-300"
+                        }`}
+                >
+                    Pending
+                    {pendingTrainers.length > 0 && (
+                        <span className="ml-2 px-2 py-0.5 bg-yellow-900/50 text-yellow-400 text-xs rounded-full border border-yellow-500/50">
+                            {pendingTrainers.length}
+                        </span>
+                    )}
+                </button>
+                <button
+                    onClick={() => setActiveTab("approved")}
+                    className={`px-6 py-3 font-bold text-sm transition-all relative ${activeTab === "approved"
+                        ? "text-primary-400 border-b-2 border-primary-500"
+                        : "text-gray-500 hover:text-gray-300"
+                        }`}
+                >
+                    Approved
+                    {approvedTrainers.length > 0 && (
+                        <span className="ml-2 px-2 py-0.5 bg-green-900/50 text-green-400 text-xs rounded-full border border-green-500/50">
+                            {approvedTrainers.length}
+                        </span>
+                    )}
+                </button>
+                <button
+                    onClick={() => setActiveTab("rejected")}
+                    className={`px-6 py-3 font-bold text-sm transition-all relative ${activeTab === "rejected"
+                        ? "text-primary-400 border-b-2 border-primary-500"
+                        : "text-gray-500 hover:text-gray-300"
+                        }`}
+                >
+                    Rejected
+                    {rejectedTrainers.length > 0 && (
+                        <span className="ml-2 px-2 py-0.5 bg-red-900/50 text-red-400 text-xs rounded-full border border-red-500/50">
+                            {rejectedTrainers.length}
+                        </span>
+                    )}
+                </button>
+            </div>
+
             {loading ? (
-                <div className="flex justify-center items-center h-64">
+                <div className="flex justify-center items-center h-64 card">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {pendingTrainers.length === 0 ? (
-                        <div className="col-span-full text-center py-12 glass-panel">
-                            <p className="text-gray-400">No pending trainer requests.</p>
-                        </div>
-                    ) : (
-                        pendingTrainers.map((trainer) => (
-                            <div key={trainer.id} className="glass-panel p-6 space-y-4">
-                                <div className="flex justify-between items-start">
-                                    <div>
-                                        <h3 className="text-xl font-semibold text-white">{trainer.username}</h3>
-                                        <p className="text-sm text-gray-400">{trainer.email}</p>
-                                    </div>
-                                    <span className="px-2 py-1 bg-yellow-900/50 text-yellow-500 text-xs font-medium rounded-full border border-yellow-500/50 uppercase">
-                                        Pending
-                                    </span>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <div className="text-sm">
-                                        <span className="text-gray-500">Specialization:</span>
-                                        <span className="ml-2 text-gray-200">{trainer.specialization || "N/A"}</span>
-                                    </div>
-                                </div>
-
-                                <div className="flex space-x-3 pt-4 border-t border-white/5">
-                                    <button
-                                        onClick={() => handleApprove(trainer.id)}
-                                        className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors"
-                                    >
-                                        Approve
-                                    </button>
-                                    <button
-                                        onClick={() => handleReject(trainer.id)}
-                                        className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors"
-                                    >
-                                        Reject
-                                    </button>
-                                </div>
-                            </div>
-                        ))
-                    )}
+                <div className="card overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left">
+                            <thead>
+                                <tr className="bg-dark-900/50 text-gray-500 text-xs font-bold uppercase tracking-widest border-b border-dark-700">
+                                    <th className="px-6 py-4">Trainer Info</th>
+                                    <th className="px-6 py-4">Specialization</th>
+                                    <th className="px-6 py-4">Status</th>
+                                    <th className="px-6 py-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-dark-700/50">
+                                {getDisplayTrainers().length === 0 ? (
+                                    <tr>
+                                        <td colSpan="4" className="text-center py-20 text-gray-500 italic">
+                                            No {activeTab} trainers found.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    getDisplayTrainers().map((trainer) => (
+                                        <tr key={trainer.id} className="hover:bg-dark-700/20 transition-colors group">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center space-x-3">
+                                                    <div className="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center">
+                                                        <span className="text-lg font-bold text-white">
+                                                            {trainer.username?.charAt(0).toUpperCase()}
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-bold text-white group-hover:text-primary-400 transition-colors">
+                                                            {trainer.fullName || trainer.username}
+                                                        </div>
+                                                        <div className="text-xs text-gray-500">{trainer.email}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-dark-900 text-gray-300 border border-dark-700">
+                                                    {trainer.specialization || "General Fitness"}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest border ${trainer.status === 'PENDING' ? 'bg-yellow-900/20 text-yellow-400 border-yellow-500/30' :
+                                                    trainer.status === 'APPROVED' ? 'bg-green-900/20 text-green-400 border-green-500/30' :
+                                                        'bg-red-900/20 text-red-400 border-red-500/30'
+                                                    }`}>
+                                                    <span className={`w-1.5 h-1.5 rounded-full mr-2 ${trainer.status === 'PENDING' ? 'bg-yellow-400' :
+                                                        trainer.status === 'APPROVED' ? 'bg-green-400' :
+                                                            'bg-red-400'
+                                                        }`}></span>
+                                                    {trainer.status}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <div className="flex justify-end space-x-2">
+                                                    {trainer.status === "PENDING" && (
+                                                        <>
+                                                            <button
+                                                                onClick={() => handleApprove(trainer.id)}
+                                                                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-xs font-bold uppercase tracking-widest rounded-lg transition-all"
+                                                            >
+                                                                Approve
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleReject(trainer.id)}
+                                                                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-widest rounded-lg transition-all"
+                                                            >
+                                                                Reject
+                                                            </button>
+                                                        </>
+                                                    )}
+                                                    {trainer.status === "REJECTED" && (
+                                                        <button
+                                                            onClick={() => handleApprove(trainer.id)}
+                                                            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-xs font-bold uppercase tracking-widest rounded-lg transition-all"
+                                                        >
+                                                            Approve
+                                                        </button>
+                                                    )}
+                                                    {trainer.status === "APPROVED" && (
+                                                        <button
+                                                            onClick={() => handleReject(trainer.id)}
+                                                            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-widest rounded-lg transition-all"
+                                                        >
+                                                            Revoke
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
         </div>
