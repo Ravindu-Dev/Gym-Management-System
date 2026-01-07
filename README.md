@@ -15,6 +15,7 @@
 - **Adaptive Dark Mode**: A stunning obsidian-themed interface with glassmorphism effects.
 - **Contactless Entry**: Digital Member QR Passes for instant gym access.
 - **Interactive Contact**: Integrated with **EmailJS** for direct user-to-admin communication.
+- **Secure Subscriptions**: Integrated with **Stripe** for seamless, PCI-compliant membership payments.
 
 ### 👤 For Members
 - **Membership Management**: Browser and subscribe to tailored gym plans.
@@ -40,8 +41,8 @@
 | **Java 17** | **React 19 (Vite)** | **Tailwind CSS** |
 | **Spring Boot 3** | **Axios API** | **Glassmorphism Design** |
 | **Spring Security** | **React Router 7** | **EmailJS Integration** |
-| **MongoDB** | **Recharts** | **Html5-QRCode Scanner** |
-| **JWT (Auth)** | **Lucide Icons** | **React-QR-Code** |
+| **MongoDB** | **Recharts** | **Stripe API** |
+| **JWT (Auth)** | **Lucide Icons** | **Html5-QRCode Scanner** |
 
 ---
 
