@@ -60,7 +60,7 @@ const Contact = () => {
                             </div>
                             <div>
                                 <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Our Location</p>
-                                <p className="text-lg font-bold">123 Fitness Way, Tech City, 90210</p>
+                                <p className="text-lg font-bold">123 Dalada Veediya, Kandy, Sri Lanka, 20000</p>
                             </div>
                         </div>
 
@@ -70,7 +70,7 @@ const Contact = () => {
                             </div>
                             <div>
                                 <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Email Support</p>
-                                <p className="text-lg font-bold">support@gms-fitness.com</p>
+                                <p className="text-lg font-bold">info@gmskandy.lk</p>
                             </div>
                         </div>
 
@@ -80,7 +80,7 @@ const Contact = () => {
                             </div>
                             <div>
                                 <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Phone Line</p>
-                                <p className="text-lg font-bold">+1 (555) 000-1234</p>
+                                <p className="text-lg font-bold">+94 81 222 3333</p>
                             </div>
                         </div>
                     </div>
