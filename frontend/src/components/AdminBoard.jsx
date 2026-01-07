@@ -5,7 +5,7 @@ import AuthService from "../services/auth.service";
 import authHeader from "../services/auth-header";
 import { Link, useNavigate } from "react-router-dom";
 
-const API_URL = "http://localhost:8081/api/equipment";
+const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:8081") + "/api/equipment";
 
 const AdminBoard = () => {
     const [content, setContent] = useState("");

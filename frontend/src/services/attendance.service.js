@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-const API_URL = "http://localhost:8081/api/attendance";
+const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:8081") + "/api/attendance";
 
 const getMyAttendance = () => {
     return axios.get(API_URL + "/my", { headers: authHeader() });

@@ -1,8 +1,8 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-const API_URL = "http://localhost:8081/api/users/";
-const TEST_URL = "http://localhost:8081/api/test/";
+const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:8081") + "/api/users/";
+const TEST_URL = (import.meta.env.VITE_API_URL || "http://localhost:8081") + "/api/test/";
 
 const getPublicContent = () => {
     return axios.get(TEST_URL + "all");
