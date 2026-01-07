@@ -27,6 +27,9 @@ import NutritionTracker from "./components/NutritionTracker";
 
 import BookTrainer from "./components/BookTrainer";
 import MyBookings from "./components/MyBookings";
+import FAQ from "./components/FAQ";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import TermsOfService from "./components/TermsOfService";
 import BookingService from "./services/booking.service";
 
 function App() {
@@ -139,6 +142,11 @@ function App() {
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="/payment/cancel" element={<PaymentCancel />} />
+
+          {/* Legal Pages */}
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
         </Routes>
       </div>
       {showPublicNavbar && <Footer />}

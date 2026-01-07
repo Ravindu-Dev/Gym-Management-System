@@ -10,6 +10,7 @@ const UserLayout = ({ children, user }) => {
         { name: 'Dashboard', path: '/user', icon: '📊' },
         { name: 'Classes', path: '/classes', icon: '🗓️' },
         { name: 'Workouts', path: '/workouts', icon: '💪' },
+        { name: 'Nutrition Log', path: '/nutrition', icon: '🥗' },
         { name: 'Book Trainer', path: '/book-trainer', icon: '🏋️' },
         { name: 'My Bookings', path: '/my-bookings', icon: '📋' },
         { name: 'My Pass', path: '/my-qr', icon: '📱' },
