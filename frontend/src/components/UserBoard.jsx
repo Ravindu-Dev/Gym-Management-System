@@ -1,24 +1,37 @@
 import { useState, useEffect } from "react";
 import MembershipService from "../services/membership.service";
 import AuthService from "../services/auth.service";
+import NutritionService from "../services/nutrition.service";
 import { Link } from "react-router-dom";
 
 const UserBoard = () => {
     const [subscriptions, setSubscriptions] = useState([]);
+    const [todayNutrition, setTodayNutrition] = useState({ calories: 0, protein: 0, carbs: 0, fat: 0 });
     const [loading, setLoading] = useState(true);
     const user = AuthService.getCurrentUser();
 
     useEffect(() => {
-        MembershipService.getMySubscriptions().then(
-            (response) => {
-                setSubscriptions(response.data);
-                setLoading(false);
-            },
-            (error) => {
+        const fetchDashboardData = async () => {
+            try {
+                const subResponse = await MembershipService.getMySubscriptions();
+                setSubscriptions(subResponse.data);
+
+                const nutritionResponse = await NutritionService.getMyNutritionToday();
+                const totals = nutritionResponse.data.reduce((acc, curr) => ({
+                    calories: acc.calories + curr.calories,
+                    protein: acc.protein + curr.protein,
+                    carbs: acc.carbs + curr.carbs,
+                    fat: acc.fat + curr.fat
+                }), { calories: 0, protein: 0, carbs: 0, fat: 0 });
+                setTodayNutrition(totals);
+            } catch (error) {
                 console.log(error);
+            } finally {
                 setLoading(false);
             }
-        );
+        };
+
+        fetchDashboardData();
     }, []);
 
     const activeSubscription = subscriptions.find(sub => sub.status === 'ACTIVE');
@@ -75,6 +88,13 @@ const UserBoard = () => {
                     <div>
                         <p className="text-sm text-gray-400 font-medium">Time Trained</p>
                         <p className="text-2xl font-bold">6h 12m</p>
+                    </div>
+                </div>
+                <div className="glass-card flex items-center space-x-4 border-primary-500/30">
+                    <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center text-2xl">🥗</div>
+                    <div>
+                        <p className="text-sm text-gray-400 font-medium">Calories Today</p>
+                        <p className="text-2xl font-bold">{todayNutrition.calories} / 2500 kcal</p>
                     </div>
                 </div>
             </div>
@@ -146,6 +166,14 @@ const UserBoard = () => {
                             </div>
                             <h3 className="text-lg font-bold mb-1 italic">Book a Trainer</h3>
                             <p className="text-sm text-gray-400">Get personalized training sessions.</p>
+                        </Link>
+                        <Link to="/nutrition" className="glass-card group hover:border-green-500/30">
+                            <div className="flex items-center justify-between mb-4">
+                                <span className="text-3xl">🥗</span>
+                                <span className="text-gray-500 group-hover:text-green-400 transition-colors">→</span>
+                            </div>
+                            <h3 className="text-lg font-bold mb-1 italic">Nutrition Log</h3>
+                            <p className="text-sm text-gray-400">Track your daily meals and macros.</p>
                         </Link>
                     </div>
                 </div>

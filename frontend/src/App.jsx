@@ -23,6 +23,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import AdminTrainerManagement from "./components/AdminTrainerManagement";
 import TrainerDashboard from "./components/TrainerDashboard";
+import NutritionTracker from "./components/NutritionTracker";
 
 import BookTrainer from "./components/BookTrainer";
 import MyBookings from "./components/MyBookings";
@@ -63,7 +64,7 @@ function App() {
   };
 
   const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
-  const isMemberRoute = ["/user", "/profile", "/classes", "/workouts", "/my-qr", "/plans", "/book-trainer", "/my-bookings"].includes(location.pathname);
+  const isMemberRoute = ["/user", "/profile", "/classes", "/workouts", "/my-qr", "/plans", "/book-trainer", "/my-bookings", "/nutrition"].includes(location.pathname);
   const isTrainerRoute = ["/trainer-dashboard"].includes(location.pathname);
   const showPublicNavbar = !isAuthPage && !isAdmin && !isTrainerRoute && (!isMember || !isMemberRoute);
 
@@ -116,6 +117,7 @@ function App() {
           <Route path="/user" element={isMember ? <UserLayout user={currentUser}><UserBoard /></UserLayout> : <Navigate to="/login" />} />
           <Route path="/profile" element={isMember ? <UserLayout user={currentUser}><Profile /></UserLayout> : <Navigate to="/login" />} />
           <Route path="/workouts" element={isMember ? <UserLayout user={currentUser}><WorkoutTracker /></UserLayout> : <Navigate to="/login" />} />
+          <Route path="/nutrition" element={isMember ? <UserLayout user={currentUser}><NutritionTracker /></UserLayout> : <Navigate to="/login" />} />
           <Route path="/my-qr" element={isMember ? <UserLayout user={currentUser}><MemberQR /></UserLayout> : <Navigate to="/login" />} />
 
           {/* Admin Routes (Kept as is for now, or potentially wrap in AdminLayout) */}
