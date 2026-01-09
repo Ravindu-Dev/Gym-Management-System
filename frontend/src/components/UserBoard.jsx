@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import MembershipService from "../services/membership.service";
+import SubscriptionService from "../services/subscription.service";
 import AuthService from "../services/auth.service";
 import NutritionService from "../services/nutrition.service";
 import { Link } from "react-router-dom";
 
 const UserBoard = () => {
-    const [subscriptions, setSubscriptions] = useState([]);
+    const [subscription, setSubscription] = useState(null);
     const [todayNutrition, setTodayNutrition] = useState({ calories: 0, protein: 0, carbs: 0, fat: 0 });
     const [loading, setLoading] = useState(true);
     const user = AuthService.getCurrentUser();
@@ -13,8 +14,9 @@ const UserBoard = () => {
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                const subResponse = await MembershipService.getMySubscriptions();
-                setSubscriptions(subResponse.data);
+                // Use the new endpoint that returns subscription with plan details
+                const subData = await SubscriptionService.getMySubscription();
+                setSubscription(subData);
 
                 const nutritionResponse = await NutritionService.getMyNutritionToday();
                 const totals = nutritionResponse.data.reduce((acc, curr) => ({
@@ -33,8 +35,6 @@ const UserBoard = () => {
 
         fetchDashboardData();
     }, []);
-
-    const activeSubscription = subscriptions.find(sub => sub.status === 'ACTIVE');
 
     return (
         <div className="space-y-8 animate-fade-in">
@@ -113,29 +113,27 @@ const UserBoard = () => {
                                 <div className="flex justify-center py-12">
                                     <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
                                 </div>
-                            ) : subscriptions.length === 0 ? (
+                            ) : !subscription ? (
                                 <div className="text-center py-12">
                                     <p className="text-gray-400 mb-6 italic">No active subscriptions found.</p>
                                     <Link to="/plans" className="btn-primary">Get a Plan Now</Link>
                                 </div>
                             ) : (
                                 <div className="space-y-4">
-                                    {subscriptions.map((sub) => (
-                                        <div key={sub.id} className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-all group">
-                                            <div className="flex items-center space-x-4">
-                                                <div className="w-12 h-12 rounded-lg bg-gmsdark-900 flex items-center justify-center text-2xl group-hover:bg-primary-600/20 transition-colors">
-                                                    💎
-                                                </div>
-                                                <div>
-                                                    <h4 className="font-bold text-white">{sub.plan.name}</h4>
-                                                    <p className="text-xs text-gray-500">Expires: {sub.endDate}</p>
-                                                </div>
+                                    <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-all group">
+                                        <div className="flex items-center space-x-4">
+                                            <div className="w-12 h-12 rounded-lg bg-gmsdark-900 flex items-center justify-center text-2xl group-hover:bg-primary-600/20 transition-colors">
+                                                💎
                                             </div>
-                                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${sub.status === 'ACTIVE' ? 'bg-accent-500/10 text-accent-400 border border-accent-500/20' : 'bg-gray-700 text-gray-400'}`}>
-                                                {sub.status}
-                                            </span>
+                                            <div>
+                                                <h4 className="font-bold text-white">{subscription.plan.name}</h4>
+                                                <p className="text-xs text-gray-500">Expires: {subscription.subscription.endDate}</p>
+                                            </div>
                                         </div>
-                                    ))}
+                                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${subscription.subscription.status === 'ACTIVE' ? 'bg-accent-500/10 text-accent-400 border border-accent-500/20' : 'bg-gray-700 text-gray-400'}`}>
+                                            {subscription.subscription.status}
+                                        </span>
+                                    </div>
                                 </div>
                             )}
                         </div>

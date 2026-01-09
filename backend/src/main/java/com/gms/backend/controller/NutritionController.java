@@ -3,6 +3,7 @@ package com.gms.backend.controller;
 import com.gms.backend.model.Nutrition;
 import com.gms.backend.service.NutritionService;
 import com.gms.backend.security.services.UserDetailsImpl;
+import com.gms.backend.security.RequiresPlan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ public class NutritionController {
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
+    @RequiresPlan(feature = "NUTRITION_TRACKER")
     public ResponseEntity<?> logNutrition(@RequestBody Nutrition nutrition, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return ResponseEntity.ok(nutritionService.logNutrition(userDetails.getId(), nutrition));
@@ -30,6 +32,7 @@ public class NutritionController {
 
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER')")
+    @RequiresPlan(feature = "NUTRITION_TRACKER")
     public ResponseEntity<List<Nutrition>> getMyNutrition(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return ResponseEntity.ok(nutritionService.getMyNutrition(userDetails.getId()));
@@ -37,6 +40,7 @@ public class NutritionController {
 
     @GetMapping("/me/today")
     @PreAuthorize("hasRole('USER')")
+    @RequiresPlan(feature = "NUTRITION_TRACKER")
     public ResponseEntity<List<Nutrition>> getMyNutritionToday(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return ResponseEntity.ok(nutritionService.getMyNutritionByDate(userDetails.getId(), LocalDate.now()));
@@ -53,6 +57,7 @@ public class NutritionController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
+    @RequiresPlan(feature = "NUTRITION_TRACKER")
     public ResponseEntity<?> deleteNutrition(@PathVariable String id) {
         nutritionService.deleteNutrition(id);
         return ResponseEntity.ok().build();

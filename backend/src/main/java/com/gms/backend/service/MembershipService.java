@@ -59,7 +59,7 @@ public class MembershipService {
         // This prevents "Double Plans" even if stripeSessionId is missing or unique
         List<MemberSubscription> userSubs = subscriptionRepository.findByUserId(userId);
         Optional<MemberSubscription> activeSamePlan = userSubs.stream()
-                .filter(s -> s.getPlan().getId().equals(planId) && "ACTIVE".equals(s.getStatus()))
+                .filter(s -> s.getPlanId().equals(planId) && "ACTIVE".equals(s.getStatus()))
                 .findFirst();
 
         if (activeSamePlan.isPresent()) {
@@ -75,8 +75,8 @@ public class MembershipService {
         }
 
         MemberSubscription subscription = new MemberSubscription();
-        subscription.setUser(user);
-        subscription.setPlan(plan);
+        subscription.setUserId(userId);
+        subscription.setPlanId(planId);
         subscription.setStartDate(LocalDate.now());
         subscription.setEndDate(LocalDate.now().plusMonths(plan.getDurationInMonths()));
         subscription.setStatus("ACTIVE");

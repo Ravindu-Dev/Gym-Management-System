@@ -33,6 +33,7 @@ public class BackendApplication implements CommandLineRunner {
 			basicPlan.setDescription("Access to basic gym facilities");
 			basicPlan.setPrice(29.99);
 			basicPlan.setDurationInMonths(1);
+			basicPlan.setFeatures(java.util.Arrays.asList("WORKOUT_TRACKER", "CLASS_SCHEDULE", "ATTENDANCE_QR"));
 			membershipPlanRepository.save(basicPlan);
 
 			MembershipPlan premiumPlan = new MembershipPlan();
@@ -40,6 +41,8 @@ public class BackendApplication implements CommandLineRunner {
 			premiumPlan.setDescription("Full access to all gym facilities and classes");
 			premiumPlan.setPrice(49.99);
 			premiumPlan.setDurationInMonths(1);
+			premiumPlan.setFeatures(java.util.Arrays.asList("WORKOUT_TRACKER", "NUTRITION_TRACKER", "BOOK_TRAINER",
+					"CLASS_SCHEDULE", "ATTENDANCE_QR"));
 			membershipPlanRepository.save(premiumPlan);
 
 			MembershipPlan annualPlan = new MembershipPlan();
@@ -47,7 +50,8 @@ public class BackendApplication implements CommandLineRunner {
 			annualPlan.setDescription("Year-long membership with all benefits");
 			annualPlan.setPrice(499.99);
 			annualPlan.setDurationInMonths(12);
-			membershipPlanRepository.save(annualPlan);
+			annualPlan.setFeatures(java.util.Arrays.asList("WORKOUT_TRACKER", "NUTRITION_TRACKER", "BOOK_TRAINER",
+					"CLASS_SCHEDULE", "ATTENDANCE_QR"));
 			membershipPlanRepository.save(annualPlan);
 		}
 

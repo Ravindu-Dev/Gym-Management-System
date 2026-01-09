@@ -3,6 +3,7 @@ package com.gms.backend.controller;
 import com.gms.backend.model.GymClass;
 import com.gms.backend.service.GymClassService;
 import com.gms.backend.security.services.UserDetailsImpl;
+import com.gms.backend.security.RequiresPlan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,6 +39,7 @@ public class GymClassController {
 
     @PostMapping("/{id}/book")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @RequiresPlan(feature = "CLASS_SCHEDULE")
     public ResponseEntity<?> bookClass(@PathVariable String id) {
         try {
             UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()

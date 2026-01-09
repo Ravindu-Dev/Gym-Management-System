@@ -26,6 +26,9 @@ public class AnalyticsService {
     @Autowired
     GymClassRepository gymClassRepository;
 
+    @Autowired
+    com.gms.backend.repository.MembershipPlanRepository planRepository;
+
     public DashboardStats getStats() {
         long totalMembers = userRepository.count();
         long totalEquipment = equipmentRepository.count();
@@ -35,7 +38,11 @@ public class AnalyticsService {
         // would be monthly/yearly logic)
         List<MemberSubscription> subs = subscriptionRepository.findAll();
         double totalRevenue = subs.stream()
-                .mapToDouble(s -> s.getPlan().getPrice())
+                .mapToDouble(s -> {
+                    return planRepository.findById(s.getPlanId())
+                            .map(plan -> plan.getPrice())
+                            .orElse(0.0);
+                })
                 .sum();
 
         return new DashboardStats(totalMembers, totalRevenue, totalEquipment, totalClasses);

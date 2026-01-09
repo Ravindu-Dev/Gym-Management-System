@@ -2,7 +2,6 @@ package com.gms.backend.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +16,8 @@ public class MemberSubscription {
     @Id
     private String id;
 
-    @DBRef
-    private User user;
-
-    @DBRef
-    private MembershipPlan plan;
+    private String userId;
+    private String planId;
 
     private LocalDate startDate;
     private LocalDate endDate;

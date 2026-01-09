@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ClassService from "../services/class.service";
+import SubscriptionService from "../services/subscription.service";
 import AuthService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 
@@ -30,9 +31,17 @@ const ClassSchedule = () => {
         );
     };
 
-    const handleBook = (id) => {
+    const handleBook = async (id) => {
         if (!currentUser) {
             navigate("/login");
+            return;
+        }
+
+        // Check if user has access to book classes
+        const hasAccess = await SubscriptionService.hasFeatureAccess("CLASS_SCHEDULE");
+        if (!hasAccess) {
+            alert("This feature requires a Basic or Premium membership plan. Please upgrade to book classes.");
+            navigate("/plans");
             return;
         }
 

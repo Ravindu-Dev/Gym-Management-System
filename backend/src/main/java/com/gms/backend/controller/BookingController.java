@@ -6,6 +6,7 @@ import com.gms.backend.model.User;
 import com.gms.backend.repository.BookingRepository;
 import com.gms.backend.repository.UserRepository;
 import com.gms.backend.security.services.UserDetailsImpl;
+import com.gms.backend.security.RequiresPlan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,6 +37,7 @@ public class BookingController {
 
     @PostMapping("/book")
     @PreAuthorize("hasRole('USER')")
+    @RequiresPlan(feature = "BOOK_TRAINER")
     public ResponseEntity<?> createBooking(@RequestBody Booking bookingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();

@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import NutritionService from "../services/nutrition.service";
+import SubscriptionService from "../services/subscription.service";
 import AuthService from "../services/auth.service";
+import LockedFeature from "./LockedFeature";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 
 const NutritionTracker = () => {
     const [logs, setLogs] = useState([]);
     const [todayLogs, setTodayLogs] = useState([]);
     const [showForm, setShowForm] = useState(false);
+    const [hasAccess, setHasAccess] = useState(null); // null = loading, true = has access, false = no access
     const [newEntry, setNewEntry] = useState({
         mealName: "Breakfast",
         foodName: "",
@@ -24,8 +27,16 @@ const NutritionTracker = () => {
     };
 
     useEffect(() => {
-        loadData();
+        checkAccess();
     }, []);
+
+    const checkAccess = async () => {
+        const access = await SubscriptionService.hasFeatureAccess("NUTRITION_TRACKER");
+        setHasAccess(access);
+        if (access) {
+            loadData();
+        }
+    };
 
     const loadData = () => {
         NutritionService.getMyNutrition().then(
@@ -90,6 +101,20 @@ const NutritionTracker = () => {
         acc[date].calories += log.calories;
         return acc;
     }, {}));
+
+    // Show loading state
+    if (hasAccess === null) {
+        return (
+            <div className="container mx-auto px-4 py-16 flex justify-center items-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+            </div>
+        );
+    }
+
+    // Show locked feature if no access
+    if (!hasAccess) {
+        return <LockedFeature featureName="Nutrition Tracker" requiredPlan="Premium" />;
+    }
 
     return (
         <div className="container mx-auto px-4 py-8 animate-fade-in">

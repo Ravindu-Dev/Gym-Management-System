@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import BookingService from "../services/booking.service";
+import SubscriptionService from "../services/subscription.service";
+import LockedFeature from "./LockedFeature";
 
 const BookTrainer = () => {
     const [trainers, setTrainers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState("");
     const [selectedTrainer, setSelectedTrainer] = useState(null);
+    const [hasAccess, setHasAccess] = useState(null);
 
     // Form fields
     const [workoutType, setWorkoutType] = useState("");
@@ -16,8 +19,18 @@ const BookTrainer = () => {
     const [bookingMessage, setBookingMessage] = useState("");
 
     useEffect(() => {
-        loadTrainers();
+        checkAccess();
     }, []);
+
+    const checkAccess = async () => {
+        const access = await SubscriptionService.hasFeatureAccess("BOOK_TRAINER");
+        setHasAccess(access);
+        if (access) {
+            loadTrainers();
+        } else {
+            setLoading(false);
+        }
+    };
 
     const loadTrainers = () => {
         setLoading(true);
@@ -65,6 +78,20 @@ const BookTrainer = () => {
             }
         );
     };
+
+    // Show loading state
+    if (hasAccess === null) {
+        return (
+            <div className="p-6 flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+            </div>
+        );
+    }
+
+    // Show locked feature if no access
+    if (!hasAccess) {
+        return <LockedFeature featureName="Book a Trainer" requiredPlan="Premium" />;
+    }
 
     return (
         <div className="p-6 space-y-8">

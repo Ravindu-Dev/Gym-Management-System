@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import WorkoutService from "../services/workout.service";
+import SubscriptionService from "../services/subscription.service";
 import AuthService from "../services/auth.service";
+import LockedFeature from "./LockedFeature";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const WorkoutTracker = () => {
     const [workouts, setWorkouts] = useState([]);
     const [showForm, setShowForm] = useState(false);
+    const [hasAccess, setHasAccess] = useState(null);
     const [newWorkout, setNewWorkout] = useState({
         type: "Strength",
         durationMinutes: 60,
@@ -16,12 +19,20 @@ const WorkoutTracker = () => {
     const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
+        checkAccess();
+    }, []);
+
+    const checkAccess = async () => {
         const user = AuthService.getCurrentUser();
         if (user) {
             setIsAdmin(user.roles.includes("ROLE_ADMIN"));
         }
-        loadWorkouts();
-    }, []);
+        const access = await SubscriptionService.hasFeatureAccess("WORKOUT_TRACKER");
+        setHasAccess(access);
+        if (access) {
+            loadWorkouts();
+        }
+    };
 
     const loadWorkouts = () => {
         WorkoutService.getMyWorkouts().then(
@@ -69,6 +80,20 @@ const WorkoutTracker = () => {
         date: new Date(w.date).toLocaleDateString(),
         volume: w.exercises.reduce((acc, ex) => acc + (ex.sets * ex.reps * ex.weight), 0)
     }));
+
+    // Show loading state
+    if (hasAccess === null) {
+        return (
+            <div className="container mx-auto px-4 py-16 flex justify-center items-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+            </div>
+        );
+    }
+
+    // Show locked feature if no access
+    if (!hasAccess) {
+        return <LockedFeature featureName="Workout Tracker" requiredPlan="Basic" />;
+    }
 
     return (
         <div className="container mx-auto px-4 py-8">
